@@ -8,16 +8,16 @@
 #define Train 1
 #define Test 0
 #define c 0.01
-//Layer ¼ö
+//Layer ìˆ˜
 #define NLayer 3
 
-//°¢ ÃşÀÇ ´º·± ¼ö
+//ê° ì¸µì˜ ë‰´ëŸ° ìˆ˜
 #define m0 3
 #define m1 2
 #define m2 3
-int M[NLayer] = { m0, m1, m2 }; // ÀüÃşÀÇ ´º·±¼ö¸¦ ÆÄ¾ÇÇÏ±â À§ÇÑ º¯¼ö
+int M[NLayer] = { m0, m1, m2 }; // ì „ì¸µì˜ ë‰´ëŸ°ìˆ˜ë¥¼ íŒŒì•…í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
 
-								// ÀÔ·Â ½ÅÈ£ÀÇ ¼ö
+								// ì…ë ¥ ì‹ í˜¸ì˜ ìˆ˜
 #define N 65 
 
 #define N_tr_examples 600
@@ -29,9 +29,9 @@ int d_te[N_te_examples][m2];
 int TestData[N_te_examples][N];
 
 double s[NLayer][N];  // weighted sum
-double f[NLayer][N];  // °¢ ´º·±ÀÇ Ãâ·Â
-double delta[NLayer][N]; // °¢ ´º·±ÀÌ °¡Áö°í ÀÖ´Â delta
-double W[NLayer][N][N]; // N¹øÂ° Ãş¿¡, M¹øÂ° ´º·±¿¡¼­ ´ÙÀ½ ´º·±À¸·Î ¿¬°áµÇ´Â ¼±ÀÇ °¡ÁßÄ¡º¤ÅÍ
+double f[NLayer][N];  // ê° ë‰´ëŸ°ì˜ ì¶œë ¥
+double delta[NLayer][N]; // ê° ë‰´ëŸ°ì´ ê°€ì§€ê³  ìˆëŠ” delta
+double W[NLayer][N][N]; // Në²ˆì§¸ ì¸µì—, Më²ˆì§¸ ë‰´ëŸ°ì—ì„œ ë‹¤ìŒ ë‰´ëŸ°ìœ¼ë¡œ ì—°ê²°ë˜ëŠ” ì„ ì˜ ê°€ì¤‘ì¹˜ë²¡í„°
 
 void setDesiredValue(int trNum, int whatNum, int whatData);
 void initial_S_F_Delta();
@@ -71,7 +71,7 @@ void main()
 			forwardTrain(i);
 			backward(i);
 			renewWeight(i);
-		}// ÀüÃ¼ ¼öÇàÇÏ¸é ÇÑ°³ÀÇ ¿¡Æø(600°³ÀÇ ÈÆ·Ã¿¹Á¦¸¦ ¼öÇàÇÑ °Í)À» ¼öÇàÇÑ °ÍÀÌµÊ.
+		}// ì „ì²´ ìˆ˜í–‰í•˜ë©´ í•œê°œì˜ ì—í­(600ê°œì˜ í›ˆë ¨ì˜ˆì œë¥¼ ìˆ˜í–‰í•œ ê²ƒ)ì„ ìˆ˜í–‰í•œ ê²ƒì´ë¨.
 
 		epochCount++;
 
@@ -95,7 +95,7 @@ void main()
 	renewWeight(0);
 
 
-	//Å×½ºÆ® °úÁ¤
+	//í…ŒìŠ¤íŠ¸ ê³¼ì •
 	for (int t = 0; t < N_te_examples; t++)
 	{
 		initial_S_F_Delta();
@@ -106,7 +106,7 @@ void main()
 		//printf("f[NLayer - 1][1] = %f\n", f[NLayer - 1][1]);
 		//printf("f[NLayer - 1][2] = %f\n", f[NLayer - 1][2]);
 
-		//µğÆúÆ®·Î 0ÀÌ¶ó°í »ı°¢ÇÏ°í ½ÃÀÛ.
+		//ë””í´íŠ¸ë¡œ 0ì´ë¼ê³  ìƒê°í•˜ê³  ì‹œì‘.
 		sysOut[0] = 1;
 		sysOut[1] = 0;
 		sysOut[2] = 0;
@@ -137,9 +137,9 @@ void main()
 
 	accuracy = (double)correctCount / N_te_examples;
 
-	printf("0Ãş/1Ãş/2Ãş ´º·ĞÀÇ ¼ö : %d / %d / %d \n", m0, m1, m2);
-	printf("ÇĞ½À·ü : %f\n", c);
-	printf("»ç¿ëµÈ epoch ¼ö : %d\n", epochCount);
+	printf("0ì¸µ/1ì¸µ/2ì¸µ ë‰´ë¡ ì˜ ìˆ˜ : %d / %d / %d \n", m0, m1, m2);
+	printf("í•™ìŠµë¥  : %f\n", c);
+	printf("ì‚¬ìš©ëœ epoch ìˆ˜ : %d\n", epochCount);
 	printf("test accuracy : %f\n\n", accuracy);
 	//Sleep(1000);
 
@@ -156,7 +156,7 @@ void initialRandomWeight()
 
 	for (int i = 0; i < NLayer; i++) // i = 0, 1, 2
 	{
-		// iÃş ÀüÃşÀÇ ´º·ĞÀÇ ¼ö¸¦ °¡Á®¿È.
+		// iì¸µ ì „ì¸µì˜ ë‰´ë¡ ì˜ ìˆ˜ë¥¼ ê°€ì ¸ì˜´.
 		if (i == 0)
 			preLayer = N; // 0~64
 		else
@@ -176,7 +176,7 @@ void initialRandomWeight()
 			}
 		}
 	}
-	//printf("1. ¿şÀÌÆ®°¡ ·£´ıÀ¸·Î ÃÊ±âÈ­ µÇ¾ú½À´Ï´Ù.\n");
+	//printf("1. ì›¨ì´íŠ¸ê°€ ëœë¤ìœ¼ë¡œ ì´ˆê¸°í™” ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
 }//initialRandomWeight()
 void initial_S_F_Delta()
 {
@@ -193,16 +193,16 @@ void initial_S_F_Delta()
 
 void loadTrainData()
 {
-	int trNum = 0;	  // ÈÆ·Ã¿¹Á¦ ¹øÈ£
-	int whatNum;	  // °¢ Æ®·¹ÀÌ´×ÀÌ ÀÇ¹ÌÇÏ´Â ¼ıÀÚ
-	char separator;   // ¾²·¹±â ¹®ÀÚ¸¦ ´ãÀ» º¯¼ö
+	int trNum = 0;	  // í›ˆë ¨ì˜ˆì œ ë²ˆí˜¸
+	int whatNum;	  // ê° íŠ¸ë ˆì´ë‹ì´ ì˜ë¯¸í•˜ëŠ” ìˆ«ì
+	char separator;   // ì“°ë ˆê¸° ë¬¸ìë¥¼ ë‹´ì„ ë³€ìˆ˜
 
 	FILE *fp;
 	fp = fopen("traindata.txt", "r");
 
 	if (fp == NULL)
 	{
-		printf("ÆÄÀÏÀÇ °æ·Î¸¦ ´Ù½Ã È®ÀÎÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.\n");
+		printf("íŒŒì¼ì˜ ê²½ë¡œë¥¼ ë‹¤ì‹œ í™•ì¸í•˜ì‹œê¸° ë°”ëë‹ˆë‹¤.\n");
 		Sleep(1000);
 		exit(1);
 	}
@@ -210,9 +210,9 @@ void loadTrainData()
 	{
 		while (!feof(fp))
 		{
-			fscanf(fp, "%d %c", &whatNum, &separator); // ÇÑ ÁÙÀÇ Ã¹ ±ÛÀÚ¸¦ ÀĞ¾îµéÀÌ°í, ±× ´ÙÀ½ '$'(¹ö¸®´Â ¹®ÀÚ)µµ ÀĞ¾îµéÀÎ´Ù. 
+			fscanf(fp, "%d %c", &whatNum, &separator); // í•œ ì¤„ì˜ ì²« ê¸€ìë¥¼ ì½ì–´ë“¤ì´ê³ , ê·¸ ë‹¤ìŒ '$'(ë²„ë¦¬ëŠ” ë¬¸ì)ë„ ì½ì–´ë“¤ì¸ë‹¤. 
 
-			setDesiredValue(trNum, whatNum, Train);		   // ÀĞ¾îµéÀÎ Ã¹ ±ÛÀÚ°¡ ¹«¾ùÀÎÁö¿¡ µû¶ó °¢ ¿¹Á¦¿¡ ÇØ´çÇÏ´Â desired °ªÀ» ³Ö¾îÁØ´Ù.
+			setDesiredValue(trNum, whatNum, Train);		   // ì½ì–´ë“¤ì¸ ì²« ê¸€ìê°€ ë¬´ì—‡ì¸ì§€ì— ë”°ë¼ ê° ì˜ˆì œì— í•´ë‹¹í•˜ëŠ” desired ê°’ì„ ë„£ì–´ì¤€ë‹¤.
 
 			for (int i = 0; i < N; i++)
 				fscanf(fp, "%d", &TrainData[trNum][i]);
@@ -223,16 +223,16 @@ void loadTrainData()
 }//loadTrainData()
 void loadTestData()
 {
-	int trNum = 0; // ÈÆ·Ã¿¹Á¦¹øÈ£
-	int whatNum;	  // °¢ Æ®·¹ÀÌ´×ÀÌ ÀÇ¹ÌÇÏ´Â ¼ıÀÚ
-	char separator;   // ¾²·¹±â ¹®ÀÚ¸¦ ´ãÀ» º¯¼ö
+	int trNum = 0; // í›ˆë ¨ì˜ˆì œë²ˆí˜¸
+	int whatNum;	  // ê° íŠ¸ë ˆì´ë‹ì´ ì˜ë¯¸í•˜ëŠ” ìˆ«ì
+	char separator;   // ì“°ë ˆê¸° ë¬¸ìë¥¼ ë‹´ì„ ë³€ìˆ˜
 
 	FILE *fp;
 	fp = fopen("testdata.txt", "r");
 
 	if (fp == NULL)
 	{
-		printf("ÆÄÀÏÀÇ °æ·Î¸¦ ´Ù½Ã È®ÀÎÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.\n");
+		printf("íŒŒì¼ì˜ ê²½ë¡œë¥¼ ë‹¤ì‹œ í™•ì¸í•˜ì‹œê¸° ë°”ëë‹ˆë‹¤.\n");
 		Sleep(1000);
 		exit(1);
 	}
@@ -240,9 +240,9 @@ void loadTestData()
 	{
 		while (!feof(fp))
 		{
-			fscanf(fp, "%d %c", &whatNum, &separator); // ÇÑ ÁÙÀÇ Ã¹ ±ÛÀÚ¸¦ ÀĞ¾îµéÀÌ°í, ±× ´ÙÀ½ '$'(¹ö¸®´Â ¹®ÀÚ)µµ ÀĞ¾îµéÀÎ´Ù. 
+			fscanf(fp, "%d %c", &whatNum, &separator); // í•œ ì¤„ì˜ ì²« ê¸€ìë¥¼ ì½ì–´ë“¤ì´ê³ , ê·¸ ë‹¤ìŒ '$'(ë²„ë¦¬ëŠ” ë¬¸ì)ë„ ì½ì–´ë“¤ì¸ë‹¤. 
 
-			setDesiredValue(trNum, whatNum, Test);		   // ÀĞ¾îµéÀÎ Ã¹ ±ÛÀÚ°¡ ¹«¾ùÀÎÁö¿¡ µû¶ó °¢ ¿¹Á¦¿¡ ÇØ´çÇÏ´Â desired °ªÀ» ³Ö¾îÁØ´Ù.
+			setDesiredValue(trNum, whatNum, Test);		   // ì½ì–´ë“¤ì¸ ì²« ê¸€ìê°€ ë¬´ì—‡ì¸ì§€ì— ë”°ë¼ ê° ì˜ˆì œì— í•´ë‹¹í•˜ëŠ” desired ê°’ì„ ë„£ì–´ì¤€ë‹¤.
 
 			for (int i = 0; i < N; i++)
 				fscanf(fp, "%d", &TestData[trNum][i]);
@@ -305,7 +305,7 @@ void setDesiredValue(int trNum, int whatNum, int whatData)
 void forwardTrain(int trNum) {
 	initial_S_F_Delta();
 
-	// 0¹øÂ° Ãş s,f°ª ±¸ÇÏ±â
+	// 0ë²ˆì§¸ ì¸µ s,fê°’ êµ¬í•˜ê¸°
 	for (int i = 0; i<M[0]; i++)
 	{
 		for (int j = 0; j<N; j++)
@@ -315,7 +315,7 @@ void forwardTrain(int trNum) {
 		f[0][i] = 1.0 / (1 + exp(-s[0][i]));
 	}
 
-	// ³ª¸ÓÁö Ãş s,f °ª ±¸ÇÏ±â
+	// ë‚˜ë¨¸ì§€ ì¸µ s,f ê°’ êµ¬í•˜ê¸°
 	for (int L = 1; L<3; L++) {
 		for (int i = 0; i<M[L]; i++) {
 			for (int j = 0; j<M[L - 1] + 1; j++) {
@@ -330,7 +330,7 @@ void forwardTrain(int trNum) {
 void forwardTest(int trNum) {
 	initial_S_F_Delta();
 
-	// 0¹øÂ° Ãş s,f°ª ±¸ÇÏ±â
+	// 0ë²ˆì§¸ ì¸µ s,fê°’ êµ¬í•˜ê¸°
 	for (int i = 0; i<M[0]; i++)
 	{
 		for (int j = 0; j<N; j++)
@@ -340,7 +340,7 @@ void forwardTest(int trNum) {
 		f[0][i] = 1.0 / (1 + exp(-s[0][i]));
 	}
 
-	// ³ª¸ÓÁö Ãş s,f °ª ±¸ÇÏ±â
+	// ë‚˜ë¨¸ì§€ ì¸µ s,f ê°’ êµ¬í•˜ê¸°
 	for (int L = 1; L<3; L++) {
 		for (int i = 0; i<M[L]; i++) {
 			for (int j = 0; j<M[L - 1] + 1; j++) {
@@ -357,12 +357,12 @@ void backward(int trNum)
 	int finalLayer = NLayer - 1;
 	double tempSum = 0;
 
-	// ÃÖÁ¾Ãş¿¡ ´ëÇÑ delta °ª ±¸ÇÏ±â
+	// ìµœì¢…ì¸µì— ëŒ€í•œ delta ê°’ êµ¬í•˜ê¸°
 	for (int i = 0; i<M[finalLayer]; i++) {
 		delta[finalLayer][i] = (d_tr[trNum][i] - f[finalLayer][i])*f[finalLayer][i] * (1 - f[finalLayer][i]);
 	}
 
-	// ³ª¸ÓÁö Ãş¿¡ ´ëÇÑ delta °ª ±¸ÇÏ±â
+	// ë‚˜ë¨¸ì§€ ì¸µì— ëŒ€í•œ delta ê°’ êµ¬í•˜ê¸°
 	for (int L = NLayer - 2; L >= 0; L--)
 	{
 		for (int i = 0; i<M[L]; i++)
@@ -375,7 +375,7 @@ void backward(int trNum)
 	}
 }
 void renewWeight(int trNum) {
-	// ¸Ç Ã¹ W°»½Å
+	// ë§¨ ì²« Wê°±ì‹ 
 	for (int i = 0; i < M[0]; i++)
 	{
 		for (int j = 0; j < N; j++) {
@@ -383,7 +383,7 @@ void renewWeight(int trNum) {
 		}
 	}
 
-	// ³ª¸ÓÁö W°»½Å
+	// ë‚˜ë¨¸ì§€ Wê°±ì‹ 
 	for (int layer = 1; layer <= NLayer - 1; layer++)
 	{
 		for (int i = 0; i < M[layer]; i++)
@@ -391,7 +391,7 @@ void renewWeight(int trNum) {
 			for (int j = 0; j < M[layer - 1] + 1; j++)
 			{
 				W[layer][i][j] += c*delta[layer][i] * f[layer - 1][j];
-			}//´õ¹ÌÀÔ·Â±îÁö ¿©±â¼­ Ã³¸®.
+			}//ë”ë¯¸ì…ë ¥ê¹Œì§€ ì—¬ê¸°ì„œ ì²˜ë¦¬.
 		}
 	}
 }
